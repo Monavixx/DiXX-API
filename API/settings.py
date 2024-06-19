@@ -53,6 +53,8 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOW_HEADERS = ('access-control-allow-origin', 'Access-Control-Allow-Origin', 'content-type', 'x-csrftoken')
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
+AUTH_USER_MODEL = 'main.DiXXUser'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

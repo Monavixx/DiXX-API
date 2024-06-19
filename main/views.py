@@ -1,10 +1,14 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from rest_framework import views, response, status, permissions
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from .serializers import UserEmailAndNameSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
-from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
+
+User = get_user_model()
+
 
 import logging
 
@@ -50,3 +54,16 @@ class LogoutView(views.APIView):
     def get(self, request: Request):
         logout(request)
         return Response({'message':'successful logout'})
+
+class RegistrationView(views.APIView):
+    def post(self, request: Request):
+        username = request.data.get('username')
+        email = request.data.get('email')
+        password = request.data.get('password')
+        try:
+            user = User.objects.create_user(username=username, email=email, password=password)
+        except ValidationError as e:
+            return Response({'success':False, 'message':str(e.messages)})
+        except IntegrityError as e:
+            return Response({'success':False, 'message':str(e.args)})
+        return Response({'success': True, 'message': 'successful registration'})
