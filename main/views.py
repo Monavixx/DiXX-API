@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from rest_framework import views, response, status, permissions
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from .serializers import UserEmailAndNameSerializer
+from .serializers import UserPublicSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
 from django.core.exceptions import ValidationError
@@ -36,7 +36,7 @@ class LoginView(views.APIView):
         
         login(request, user)
         
-        data = UserEmailAndNameSerializer(request.user).data
+        data = UserPublicSerializer(request.user).data
         data['is_authenticated'] = True
         data['message'] = 'successful authentication!'
         return Response(data)
@@ -44,7 +44,7 @@ class LoginView(views.APIView):
     def get(self, request: Request):
         if request.user is None or not request.user.is_authenticated:
             return self._error_response('not authenticated')
-        data = UserEmailAndNameSerializer(request.user).data
+        data = UserPublicSerializer(request.user).data
         data['is_authenticated'] = True
         data['message'] = 'You are already logged in'
         return Response(data)
