@@ -10,7 +10,7 @@ class DiXXUserManager(UserManager):
     pass
 
 class DiXXUser(AbstractUser):
-    email = models.EmailField(unique=True, validators=[EmailValidator])
+    email = models.EmailField(unique=True)
     gender = models.CharField(max_length=1, choices={'m':'man', 'w': 'woman'}, blank=True, null=True)
     objects = DiXXUserManager()
     def save(self, *args, **kwargs):
