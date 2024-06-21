@@ -9,6 +9,9 @@ class Set(models.Model):
     create_datetime = models.DateTimeField(auto_now_add = True)
     users = models.ManyToManyField(User, related_name='sets')
     is_private = models.BooleanField(default=False)
+    @property
+    def numberOfCards(self):
+        return len(self.card_set.all())
 
 class Card(models.Model):
     first = models.CharField(max_length=200)
