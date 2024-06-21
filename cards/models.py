@@ -8,6 +8,7 @@ class Set(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     create_datetime = models.DateTimeField(auto_now_add = True)
     users = models.ManyToManyField(User, related_name='sets')
+    is_private = models.BooleanField(default=False)
 
 class Card(models.Model):
     first = models.CharField(max_length=200)

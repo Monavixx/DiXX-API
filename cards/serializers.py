@@ -12,9 +12,9 @@ class SetSerializer(serializers.ModelSerializer):
     card_set = CardSerializer(many=True)
     class Meta:
         model = Set
-        fields = ['id', 'name', 'description', 'author', 'create_datetime', 'card_set']
+        fields = ['id', 'name', 'description', 'author', 'create_datetime', 'card_set', 'is_private']
 class SetOverviewSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField('username', read_only=True)
     class Meta:
         model = Set
-        fields = ['id', 'name', 'description', 'author', 'create_datetime']
+        fields = ['id', 'name', 'description', 'author', 'create_datetime', 'is_private']
