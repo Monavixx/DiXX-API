@@ -15,6 +15,9 @@ class MySetViewSet(views.APIView):
     def get(self, request : Request):
         query = request.user.sets.all()
         return Response(SetOverviewSerializer(query, many=True).data)
+    def handle_exception(self, exc):
+        print(exc.detail)
+        return Response({'message': exc.detail}, status=exc.status_code)
 
 class SetView(views.APIView):
     permission_classes = [IsAuthenticated]
@@ -35,3 +38,4 @@ class LearnRandomView(views.APIView):
         cards = curSet.card_set.all()
         randomCard = cards[random.randint(0, len(cards)-1)]
         return Response(CardSerializer(randomCard).data)
+    
