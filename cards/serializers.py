@@ -13,8 +13,20 @@ class SetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Set
         fields = ['id', 'name', 'description', 'author', 'create_datetime', 'card_set', 'is_private', 'numberOfCards']
-class SetOverviewSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField('username', read_only=True)
-    class Meta:
-        model = Set
-        fields = ['id', 'name', 'description', 'author', 'create_datetime', 'is_private', 'numberOfCards']
+
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', [
+            'id', 'name', 'description', 'author', 'create_datetime',
+            'card_set', 'is_private', 'numberOfCards'
+        ])
+        super().__init__(*args, **kwargs)
+        if fields is None:
+            fields = [
+                'id', 'name', 'description', 'author', 'create_datetime',
+                'is_private', 'numberOfCards'
+            ]
+        
+        if fields is not None:
+            useless = set(self.fields.keys()) - set(fields)
+            for field in useless:
+                self.fields.pop(field)

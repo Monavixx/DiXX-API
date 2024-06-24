@@ -56,6 +56,7 @@ CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 AUTH_USER_MODEL = 'main.DiXXUser'
 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

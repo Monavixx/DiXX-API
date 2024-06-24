@@ -46,7 +46,7 @@ class LoginView(views.APIView):
             return self._error_response('not authenticated')
         data = UserPublicSerializer(request.user).data
         data['is_authenticated'] = True
-        data['message'] = 'You are already logged in'
+        data['message'] = 'You are logged in'
         return Response(data)
 
 

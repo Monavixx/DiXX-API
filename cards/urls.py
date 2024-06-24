@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import MySetViewSet, SetView, LearnRandomView
+from .views import MySetsViewSet, SetView, LearnRandomView, CreateSetView
 from rest_framework import routers
 
 
@@ -8,7 +8,8 @@ from rest_framework import routers
 
 urlpatterns = [
     #path('', include(router.urls)),
-    path('sets/my/', MySetViewSet.as_view(), name='my-sets'),
-    path('sets/<int:id>/', SetView.as_view(), name='set_detailed'),
-    path('sets/<int:id>/random-learn/', LearnRandomView.as_view(), name='random-learn')
+    path('sets/my/', MySetsViewSet.as_view(), name='my-sets'),
+    path('set/<int:id>/', SetView.as_view(), name='set-detailed'),
+    path('set/<int:id>/random-learn/', LearnRandomView.as_view(), name='random-learn'),
+    path('create-new-set/', CreateSetView.as_view(), name='create-set-view')
 ]
