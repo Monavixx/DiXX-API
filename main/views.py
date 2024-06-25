@@ -20,9 +20,8 @@ def information_about_api(request):
 class LoginView(views.APIView):
     def _error_response(self, message):
         return Response({
-            'is_authenticated': False,
             'message': message
-        })
+        }, status=400)
     def post(self, request: Request):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -37,23 +36,20 @@ class LoginView(views.APIView):
         login(request, user)
         
         data = UserPublicSerializer(request.user).data
-        data['is_authenticated'] = True
-        data['message'] = 'successful authentication!'
-        return Response(data)
+        return Response({'data':data, 'message': 'successful authentication!'}, status=200)
 
     def get(self, request: Request):
         if request.user is None or not request.user.is_authenticated:
-            return self._error_response('not authenticated')
+            return Response({'message': 'not authenticated'}, status=401)
         data = UserPublicSerializer(request.user).data
-        data['is_authenticated'] = True
-        data['message'] = 'You are logged in'
-        return Response(data)
+        return Response({'data':data, 'message': 'You are logged in'}, status=200)
 
 
 class LogoutView(views.APIView):
     def get(self, request: Request):
         logout(request)
-        return Response({'message':'successful logout'})
+        return Response({'message': 'Successful logout.'}, status=200)
+
 
 class RegistrationView(views.APIView):
     def post(self, request: Request):
@@ -61,9 +57,9 @@ class RegistrationView(views.APIView):
         email = request.data.get('email')
         password = request.data.get('password')
         try:
-            user = User.objects.create_user(username=username, email=email, password=password)
+            User.objects.create_user(username=username, email=email, password=password)
         except ValidationError as e:
-            return Response({'success':False, 'message':str(e.messages)})
+            return Response({'message':str(e.messages)}, status=400)
         except IntegrityError as e:
-            return Response({'success':False, 'message':str(e.args)})
-        return Response({'success': True, 'message': 'successful registration'})
+            return Response({'message':str(e.args)}, status=400)
+        return Response({'message': 'successful registration'}, status=201)

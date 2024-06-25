@@ -5,7 +5,11 @@ from main.serializers import UserPublicSerializer, UserUsernameSerializer
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = ['first', 'second', 'create_datetime']
+        fields = ['first', 'second', 'create_datetime', 'cardset']
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.pop('cardset')
+        return representation
 
 class SetSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField('username', read_only=True)
@@ -30,3 +34,9 @@ class SetSerializer(serializers.ModelSerializer):
             useless = set(self.fields.keys()) - set(fields)
             for field in useless:
                 self.fields.pop(field)
+
+
+class SetCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Set
+        fields = ['id', 'name', 'description', 'author', 'is_private']
