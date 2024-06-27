@@ -5,7 +5,7 @@ from main.serializers import UserPublicSerializer, UserUsernameSerializer
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = ['first', 'second', 'create_datetime', 'cardset']
+        fields = ['id', 'first', 'second', 'create_datetime', 'cardset']
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation.pop('cardset')

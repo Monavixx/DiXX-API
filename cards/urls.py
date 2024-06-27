@@ -14,5 +14,7 @@ urlpatterns = [
     path('create-new-set/', views.CreateSetView.as_view(), name='create-new-set'),
     path('remove-set/', views.RemoveSetView.as_view(), name='remove-set'),
     path('edit-set/<int:pk>/', views.EditSetView.as_view(), name='edit-set'),
-    path('set/<int:pk>/add-card/', views.AddCardView.as_view(), name='add-card')
+    path('set/<int:pk>/add-card/', views.AddCardView.as_view(), name='add-card'),
+    path('delete/', views.DeleteCardView.as_view(), name='delete-card'),
+    path('add-set/', views.AddSetView.as_view(), name='add-set')
 ]

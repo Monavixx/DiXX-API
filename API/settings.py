@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'guardian',
     'main',
     'cards'
 ]
@@ -55,6 +56,11 @@ CORS_ALLOW_HEADERS = ('access-control-allow-origin', 'Access-Control-Allow-Origi
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 AUTH_USER_MODEL = 'main.DiXXUser'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', 
+    'guardian.backends.ObjectPermissionBackend', 
+)
 
 
 LOGGING = {
