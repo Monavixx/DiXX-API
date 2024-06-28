@@ -52,8 +52,16 @@ CORS_ORIGIN_ALLOW_ALL = True
 #    'http://192.168.31.219:3000'
 #]
 
-CORS_ALLOW_HEADERS = ('access-control-allow-origin', 'Access-Control-Allow-Origin', 'content-type', 'x-csrftoken')
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CORS_ALLOW_HEADERS = (
+    'access-control-allow-origin',
+    'Access-Control-Allow-Origin', 
+    'content-type', 
+    'x-csrftoken'
+)
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://192.168.31.219:3000'
+]
 
 AUTH_USER_MODEL = 'main.DiXXUser'
 
@@ -62,29 +70,6 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend', 
 )
 
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'filters': ['require_debug_true'],
-        },
-    },
-    'loggers': {
-        'mylogger': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': True,
-        },
-    },
-}
 
 ROOT_URLCONF = 'API.urls'
 
