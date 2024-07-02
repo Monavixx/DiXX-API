@@ -28,9 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'guardian',
     'main',
-    'cards'
+    'cards',
+    'guardian',
 ]
 
 MIDDLEWARE = [
@@ -58,9 +58,13 @@ CORS_ALLOW_HEADERS = (
     'content-type', 
     'x-csrftoken'
 )
+
+import socket
+ip = socket.gethostbyname(socket.gethostname())
+
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
-    'http://192.168.31.219:3000'
+    'http://' + ip + ':3000'
 ]
 
 AUTH_USER_MODEL = 'main.DiXXUser'

@@ -3,6 +3,7 @@ from guardian.models import UserObjectPermissionBase, GroupObjectPermissionBase
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+
 class Set(models.Model):
     name = models.CharField(max_length=200, default='')
     description = models.TextField(default='')
