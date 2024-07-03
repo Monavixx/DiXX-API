@@ -18,7 +18,7 @@ User = get_user_model()
 class MySetsViewSet(views.APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request : Request):
-        query = get_objects_for_user(request.user, 'set_view', request.user.sets.all())
+        query = get_objects_for_user(request.user, 'set_view', request.user.sets.all().order_by('-create_datetime'))
         serializer = SetSerializer(query, many=True, fields=None)
         data = serializer.data
         return Response({'data':data, 'message':'Your sets have been found successfully.'})
