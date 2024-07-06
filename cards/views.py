@@ -30,8 +30,8 @@ class SetView(views.APIView):
     def get(self, request: Request, id):
         query = Set.objects.get(id=id)
 
-        if query.is_private and not request.user.has_perm('set_view', query):
-            return Response({'data':{'is_private':True}, 'message': 'This set is private.'}, status=403)
+        if query.visibility == 0 and not request.user.has_perm('set_view', query):
+            return Response({'data':{'visibility':0}, 'message': 'This set is private.'}, status=403)
         
         #Client can choose what fields the server has to give him
         fields = request.query_params.get('fields').split(',') \
@@ -54,7 +54,7 @@ class LearnRandomView(views.APIView):
 
     def get(self, request: Request, id):
         curSet = Set.objects.get(id=id)
-        if curSet.is_private and not request.user.has_perm('set_view', curSet):
+        if curSet.visibility == 0 and not request.user.has_perm('set_view', curSet):
             return Response({'message': 'This set is private', 'success': False}, status=403)
         cards = curSet.card_set.all()
         if len(cards) <= 0:
@@ -82,6 +82,11 @@ class CreateSetView(views.APIView):
                              'message': 'Set has been created successfully'}, status=201)
         return Response({'errors':serializer.errors, 'message': 'Failed to create set'}, status=400)
 
+class DataForCreatingSetView(views.APIView):
+    def get(self, request: Request):
+        return Response({
+            'data': {'visibility_choices': Set.VISIBILITY_CHOICES}
+        },status=200)
 
 class RemoveSetView(views.APIView):
     permission_classes = [IsAuthenticated]
@@ -144,7 +149,8 @@ class AddSetView(views.APIView):
     def post(self, request: Request):
         pk = request.data.get('id')
         cardset = Set.objects.get(pk=pk)
-        if cardset.is_private and not request.user.has_perm('set_view', cardset):
+        
+        if cardset.visibility == 0 and not request.user.has_perm('set_view', cardset):
             return Response({'message': 'You can\'t add the private set'}, status=403)
         cardset.users.add(request.user)
         return Response({'message':'You added this set successfully.'}, status=200)
