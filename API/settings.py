@@ -26,10 +26,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken',
+
     'main',
     'cards',
+    'friends',
+
     'guardian',
 ]
 
@@ -45,6 +50,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 #CORS_ORIGIN_WHITELIST = [
@@ -56,7 +67,8 @@ CORS_ALLOW_HEADERS = (
     'access-control-allow-origin',
     'Access-Control-Allow-Origin', 
     'content-type', 
-    'x-csrftoken'
+    'x-csrftoken',
+    'authorization'
 )
 
 

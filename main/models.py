@@ -9,6 +9,8 @@ class DiXXUserManager(UserManager):
 class DiXXUser(AbstractUser):
     email = models.EmailField(unique=True)
     gender = models.CharField(max_length=1, choices={'m':'man', 'w': 'woman'}, blank=True, null=True)
+    friends = models.ManyToManyField('self', blank=True, symmetrical=True)
+
     objects = DiXXUserManager()
 
     def clean(self, *args, **kwargs):
@@ -17,3 +19,6 @@ class DiXXUser(AbstractUser):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.username

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Card, Set
-from main.serializers import UserPublicSerializer, UserUsernameSerializer
 
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
