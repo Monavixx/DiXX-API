@@ -16,10 +16,16 @@ def information_about_api(request):
     return JsonResponse({'version':'0.0.1'})
 
 class LoginView(views.APIView):
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [IsAuthenticated()]
+        return []
+    
     def _error_response_400(self, message):
         return Response({
             'message': message
         }, status=400)
+        
     def post(self, request: Request):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -37,9 +43,8 @@ class LoginView(views.APIView):
         data['token'] = token.key
         return Response({'data':data, 'message': 'Successful authentication'}, status=200)
 
+    
     def get(self, request: Request):
-        if request.user is None:
-            return Response({'message': 'Unauthorized'}, status=401)
         data = UserSerializer(request.user).data
         return Response({'data':data, 'message': 'You are logged in'}, status=200)
 
@@ -55,13 +60,8 @@ class RegenerateTokenView(views.APIView):
 
 class RegistrationView(views.APIView):
     def post(self, request: Request):
-        username = request.data.get('username')
-        email = request.data.get('email')
-        password = request.data.get('password')
-        try:
-            User.objects.create_user(username=username, email=email, password=password)
-        except ValidationError as e:
-            return Response({'message':str(e.messages)}, status=400)
-        except IntegrityError as e:
-            return Response({'message':str(e.args)}, status=400)
-        return Response({'message': 'successful registration'}, status=201)
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'successful registration'}, status=201)
+        return Response({'errors': serializer.errors}, status=400)

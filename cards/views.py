@@ -20,7 +20,6 @@ class MySetsViewSet(views.APIView):
     def get(self, request : Request):
         query = []
         for s in request.user.sets.all().order_by('-create_datetime'):
-            print(s.visibility)
             if s.visibility == 0 and not request.user.has_perm('set_view', s):
                 continue
             query.append(s)    
